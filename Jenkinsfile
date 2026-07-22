@@ -33,20 +33,23 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
-            steps {
-                withAWS(credentials: 'aws-creds', region: "${region}") {
+        stage('Build Image') 
+        {
+            steps 
+            {
+                withAWS(credentials: 'aws-creds', region: "${region}") 
+                {
                         // Commands here have AWS authentication
                         sh """
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 
                             ${ACC_ID}.dkr.ecr.${region}.amazonaws.com
                             docker build -t ${ACC_ID}.dkr.${region}.amazonaws.com/roboshop/catalogue:latest:${appVersion} .
-                            docker push${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:latest:${appVersion} 
+                            docker push ${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:latest:${appVersion} 
 
                         """
+                }
             }
         }
-    }
 
     post {
         always {
