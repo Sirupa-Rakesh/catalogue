@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    def appVersion = packageJson.version
+                    env appVersion = packageJson.version
                     echo "Building version ${env.appVersion}"
                 }
             }
@@ -50,8 +50,9 @@ pipeline {
                 withAWS(credentials: 'aws-creds', region: "${region}") {
                     sh """
                         aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.${region}.amazonaws.com
-                        docker build -t ${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${appVersion} .
-                        docker push ${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${appVersion}
+                        docker build -t ${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${env.appVersion} .
+                        docker push ${ACC_ID}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${env.appVersion}
+
                     """
                 }
             }
