@@ -1,9 +1,11 @@
-pipeline {
+pipeline 
+{
     agent {
         node {
             label 'roboshop'
         }
     }
+}
 
     environment {
         appVersion = ""
