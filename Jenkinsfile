@@ -4,11 +4,10 @@ pipeline {
             label 'roboshop'
         }
     }
-}
 
     environment {
         appVersion = ""
-        ACC_ID = "489693027985"    // Example: 123456789012
+        ACC_ID = "489693027985"
         region = "us-east-1"
     }
 
@@ -33,12 +32,15 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage ('SonarQube Analysis'){
+
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool name: 'sonar-8' // agent configuration
-                    withSonarQubeEnv('sonar-server') { // analysing and uploading to server
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    def scannerHome = tool name: 'sonar-8'
+
+                    withSonarQubeEnv('sonar-server') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
                 }
             }
         }
@@ -54,7 +56,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     post {
